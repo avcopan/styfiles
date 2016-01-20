@@ -1,0 +1,847 @@
+\documentclass{article}
+\usepackage[cm]{fullpage}
+
+\usepackage{tikz}
+
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+\tikzset{
+  ->-/.style={
+    semithick,
+    decoration={
+      markings,
+      mark=at position #1 with {
+        \draw (-0.03,-0.05)--(+0.03,0)--(-0.03,+0.05);
+      }
+    },
+    postaction={decorate}
+  },
+  -<-/.style={
+    semithick,
+    decoration={
+      markings,
+      mark=at position #1 with {
+        \draw (+0.03,-0.05)--(-0.03,0)--(+0.03,+0.05);
+      }
+    },
+    postaction={decorate}
+  },
+  ->-/.default=0.5,
+  -<-/.default=0.5,
+  overhang/.style={
+    semithick,
+    line cap=round,
+    shorten >=-0.17cm,
+    shorten <=-0.17cm,
+    decoration={
+      markings,% switch on markings
+      mark=at position 0 with {\coordinate (start) at (0,0);},
+      mark=at position 1 with {% hack to make 0-length line horizontal -- only works
+        \coordinate (end) at (0.00001,0);% for \draw[overhang], not \node[overhang]
+        \draw [semithick,line cap=round,shorten >=-0.17cm,shorten <=0.17cm]
+          (start)--(end)--(start);
+      }
+    },
+    postaction={decorate}
+  },
+  sawtooth/.style={
+    decoration={zigzag, segment length=0.2cm,amplitude=1pt},
+    decorate
+  },
+  wiggly/.style={
+    decoration={snake, segment length=0.2cm,amplitude=1pt},
+    decorate
+  },
+  dot/.style={
+    inner sep=0pt,
+    minimum size=0.66ex,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[draw,fill=#1] (0,0) circle (0.33ex);
+      \end{pgfonlayer}
+    }
+  },
+  ddot/.style={
+    inner sep=0pt,
+    minimum size=0.9ex,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[draw,double,fill=#1] (0,0) circle (0.45ex);
+      \end{pgfonlayer}
+    }
+  },
+  dot/.default={black},
+  ddot/.default={black},
+  ex/.style={
+    path picture={
+      \draw(path picture bounding box.south east)--(path picture bounding box.north west)
+           (path picture bounding box.south west)--(path picture bounding box.north east);
+    }
+  },
+  plus/.style={
+    path picture={
+      \draw(path picture bounding box.south)--(path picture bounding box.north)
+           (path picture bounding box.east) --(path picture bounding box.west) ;
+    }
+  },
+  circlex/.style={
+    inner sep=0pt,
+    minimum size=0.25cm,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[ex,fill=white] (0,0) circle (0.125cm);
+      \end{pgfonlayer}
+    }
+  },
+  circlep/.style={
+    inner sep=0pt,
+    minimum size=0.25cm,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[plus,fill=white] (0,0) circle (0.125cm);
+      \end{pgfonlayer}
+    }
+  },
+  squarex/.style={
+    inner sep=0pt,
+    minimum size=0.333cm,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \node[draw,fill=white,ex,regular polygon, regular polygon sides=4, minimum width=0.333cm] at (0,0) {};
+      \end{pgfonlayer}
+    }
+  },
+  squarep/.style={
+    inner sep=0pt,
+    minimum size=0.333cm,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \node[draw,fill=white,plus,regular polygon, regular polygon sides=4, minimum width=0.333cm] at (0,0) {};
+      \end{pgfonlayer}
+    }
+  },
+  framenodes/.style={
+    draw,
+    thick,
+    rounded corners=5pt,
+    inner sep=5pt,
+    fit=#1
+  }
+}
+
+\newcommand{\padborder}[1]{
+  \draw[line width=#1,opacity=0] (current bounding box.south east) rectangle
+                                 (current bounding box.north west);
+}
+\usepackage{etoolbox}
+\newcommand{\frameit}[1]{
+  \padborder{5pt};
+  \coordinate (tl) at (current bounding box.north west);
+  \coordinate (tr) at (current bounding box.north east);
+  \coordinate (bl) at (current bounding box.south west);
+  \coordinate (br) at (current bounding box.south east);
+  \renewcommand*{\do}[1]{
+    \ifstrequal{##1}{top}{
+      \draw[double, thick] (tl) --(tr);
+    }{}
+    \ifstrequal{##1}{bottom}{
+      \draw[double, thick] (bl)--(br);
+    }{}
+  }
+  \docsvlist{#1}
+}
+\newcommand{\diagram}[2][none]{
+  \begin{tikzpicture}[baseline=-2.5pt,scale=0.8,every node/.style={scale=0.8}]
+    #2
+    \frameit{#1};
+  \end{tikzpicture}
+}
+
+
+\newcommand{\interaction}[5]{
+  \draw[#5] #3 to ++(#1-1,0);
+  \foreach \i in {1,...,#1}{
+    \node[#4] (#2\i) at ($#3 + (\i-1,0)$){};
+  }
+}
+
+
+\begin{document}
+
+\begin{equation}
+  a_p
+\equiv
+\diagram{
+  \node[dot=white] (p) at (0,0) {} node[above] {$p$};
+  \draw[-<-] (p) to ++(0,-0.5);
+}
+\hspace{20pt}
+  a_p^\dagger
+\equiv
+\diagram{
+  \node[dot=white] (p) at (0,0) {} node[below] {$p$};
+  \draw[->-] (p) to ++(0,+0.5);
+}
+\hspace{20pt}
+  b_a
+\equiv
+\diagram{
+  \node[dot] (a) at (0,0) {} node[above] {$a$};
+  \draw[-<-] (a) to ++(0,-0.5);
+}
+\hspace{20pt}
+  b_i
+\equiv
+\diagram{
+  \node[dot] (i) at (0,0) {} node[above] {$i$};
+  \draw[->-] (i) to ++(0,-0.5);
+}
+\hspace{20pt}
+  b_a^\dagger
+\equiv
+\diagram{
+  \node[dot] (a) at (0,0) {} node[below] {$a$};
+  \draw[->-] (a) to ++(0,+0.5);
+}
+\hspace{20pt}
+  b_i^\dagger
+\equiv
+\diagram{
+  \node[dot] (i) at (0,0) {} node[below] {$i$};
+  \draw[-<-] (i) to ++(0,+0.5);
+}
+\end{equation}
+
+\begin{equation}
+  a^{p_1p_2\cdots p_n}_{q_1q_2\cdots q_n}
+\equiv
+\diagram{
+  \node[dot=white] (a1) at (0,0) {};
+  \node[dot=white] (a2) at (1,0) {};
+  \node (dots) at (1.75,0) {$\cdots$};
+  \node[dot=white] (an) at (2.5,0) {};
+  \draw (a1)--(a2)--(dots)--(an);
+  \draw[->-] (a1) to ++(0,+0.5) node[above] {$p_1$};
+  \draw[->-] (a2) to ++(0,+0.5) node[above] {$p_2$};
+  \draw[->-] (an) to ++(0,+0.5) node[above] {$p_n$};
+  \draw[-<-] (a1) to ++(0,-0.5) node[below] {$q_1$};
+  \draw[-<-] (a2) to ++(0,-0.5) node[below] {$q_2$};
+  \draw[-<-] (an) to ++(0,-0.5) node[below] {$q_n$};
+}
+\hspace{20pt}
+  \tilde{a}^{p_1p_2\cdots p_n}_{q_1q_2\cdots q_n}
+\equiv
+\diagram{
+  \node[ddot=white] (a1) at (0,0) {};
+  \node[ddot=white] (a2) at (1,0) {};
+  \node (dots) at (1.75,0) {$\cdots$};
+  \node[ddot=white] (an) at (2.5,0) {};
+  \draw (a1)--(a2)--(dots)--(an);
+  \draw[->-] (a1) to ++(0,+0.5) node[above] {$p_1$};
+  \draw[->-] (a2) to ++(0,+0.5) node[above] {$p_2$};
+  \draw[->-] (an) to ++(0,+0.5) node[above] {$p_n$};
+  \draw[-<-] (a1) to ++(0,-0.5) node[below] {$q_1$};
+  \draw[-<-] (a2) to ++(0,-0.5) node[below] {$q_2$};
+  \draw[-<-] (an) to ++(0,-0.5) node[below] {$q_n$};
+}
+\end{equation}
+
+\begin{equation}
+  \textstyle(\frac{1}{n!})^2
+  v_{p_1p_2\cdots p_n}^{q_1q_2\cdots q_n}
+  \tilde{a}^{p_1p_2\cdots p_n}_{q_1q_2\cdots q_n}
+\equiv
+\diagram{
+  \node[draw] (label) at (-0.7,0) {{\mathversion{bold}$v$}};
+  \node[ddot=white] (v1) at (0,0) {};
+  \node[ddot=white] (v2) at (1,0) {};
+  \node (dots) at (1.75,0) {$\cdots$};
+  \node[ddot=white] (vn) at (2.5,0) {};
+  \draw (label)--(v1)--(v2)--(dots)--(vn);
+  \draw[->-] (v1) to ++(0,+0.5);
+  \draw[-<-] (v1) to ++(0,-0.5);
+  \draw[->-] (v2) to ++(0,+0.5);
+  \draw[-<-] (v2) to ++(0,-0.5);
+  \draw[->-] (vn) to ++(0,+0.5);
+  \draw[-<-] (vn) to ++(0,-0.5);
+}
+\end{equation}
+
+\begin{equation}
+  h_p^qa_q^p
+\equiv
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot=white] (h1) {}; 
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
+\end{equation}
+
+\begin{equation}
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot=white] (h1) {};
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
+=
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[ddot=white] (h1) {};
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
++
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[ddot=white] (h1) {};
+  \draw[-<-] (h1) arc (0:360:-0.25);
+}
+\end{equation}
+
+\begin{equation}
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot=white] (h1) {};
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
+=
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot] (h1) {};
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
++
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot] (h1) {};
+  \draw[->-] (h1) to ++(-0.25,+0.5);
+  \draw[-<-] (h1) to ++(+0.25,+0.5);
+}
++
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot] (h1) {};
+  \draw[->-] (h1) to ++(-0.25,-0.5);
+  \draw[-<-] (h1) to ++(+0.25,-0.5);
+}
++
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot] (h1) {};
+  \draw[->-] (h1) to ++(0,-0.5);
+  \draw[-<-] (h1) to ++(0,+0.5);
+}
+\end{equation}
+
+\begin{equation}
+  \textstyle\frac{1}{4}\overline{g}_{pq}^{rs}a_{rs}^{pq}
+=
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+\end{equation}
+
+\begin{equation}
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+=
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[-<-] (g2) arc (0:360:-0.25);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) arc (0:360:+0.25);
+  \draw[-<-] (g2) arc (0:360:-0.25);
+}
+\end{equation}
+
+\begin{equation}
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+=
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(-0.25,+0.5);
+  \draw[-<-] (g2) to ++(+0.25,+0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(-0.25,-0.5);
+  \draw[-<-] (g2) to ++(+0.25,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(-0.25,+0.5);
+  \draw[-<-] (g1) to ++(+0.25,+0.5);
+  \draw[->-] (g2) to ++(-0.25,+0.5);
+  \draw[-<-] (g2) to ++(+0.25,+0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(-0.25,-0.5);
+  \draw[-<-] (g1) to ++(+0.25,-0.5);
+  \draw[->-] (g2) to ++(-0.25,-0.5);
+  \draw[-<-] (g2) to ++(+0.25,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(-0.25,-0.5);
+  \draw[-<-] (g1) to ++(+0.25,-0.5);
+  \draw[->-] (g2) to ++(-0.25,+0.5);
+  \draw[-<-] (g2) to ++(+0.25,+0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,-0.5);
+  \draw[-<-] (g1) to ++(0,+0.5);
+  \draw[->-] (g2) to ++(-0.25,+0.5);
+  \draw[-<-] (g2) to ++(+0.25,+0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,-0.5);
+  \draw[-<-] (g1) to ++(0,+0.5);
+  \draw[->-] (g2) to ++(-0.25,-0.5);
+  \draw[-<-] (g2) to ++(+0.25,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot}{sawtooth};
+  \draw[->-] (g1) to ++(0,-0.5);
+  \draw[-<-] (g1) to ++(0,+0.5);
+  \draw[->-] (g2) to ++(0,-0.5);
+  \draw[-<-] (g2) to ++(0,+0.5);
+}
+\end{equation}
+
+\begin{equation}
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[dot=white] (h1) {};
+  \draw[->-] (h1) to ++(0,+0.5);
+  \draw[-<-] (h1) to ++(0,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{dot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+=
+  E_0
++
+\diagram{
+  \draw (-0.5,0) node[circlex] (f) {} -- (0,0) node[ddot=white] (f1) {};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+\hspace{40pt}
+  E_0
+\equiv
+\diagram{
+  \draw (-0.5,0) node[squarex] (h) {} -- (0,0) node[ddot=white] (h1) {};
+  \draw[-<-] (h1) arc (0:360:-0.25);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) arc (0:360:+0.25);
+  \draw[-<-] (g2) arc (0:360:-0.25);
+}
+\hspace{40pt}
+\diagram{
+  \draw (-0.5,0) node[circlex] (f) {} -- (0,0) node[ddot=white] (f1) {};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+}
+\equiv
+\diagram{
+  \draw (-0.5,0) node[squarex] (f) {} -- (0,0) node[ddot=white] (f1) {};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) arc (0:360:0.25);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+}
+\end{equation}
+
+\begin{equation}
+\diagram[top, bottom]{
+%top
+  \node at (0.0,1) {1};
+  \node at (0.5,1) {+};
+  \draw[overhang] (1.25,1.25) node[ddot] (c1*) {};
+  \draw[-<-] (c1*) to ++(-0.25,-0.5);
+  \draw[->-] (c1*) to ++(+0.25,-0.5);
+%middle
+  \draw (-0.5,0) node[circlex](f){} -- (0,0) node[ddot=white](f1){};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+  \node at (0.5,0) {+};
+  \interaction{2}{g}{(1,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+%bottom
+  \node at (0.0,-1) {1};
+  \node at (0.5,-1) {+};
+  \draw[overhang] (1.25,-1.25) node[ddot] (c1) {};
+  \draw[->-] (c1) to ++(-0.25,+0.5);
+  \draw[-<-] (c1) to ++(+0.25,+0.5);
+}
+=
+\diagram{
+  \draw (-0.5,+0.5) node[circlex] (f) {} to (0,+0.5) node[ddot] (f1) {};
+  \draw[overhang] (0,-0.5) node[ddot] (c1) {};
+  \draw[-<-,bend right] (f1) to (c1);
+  \draw[->-,bend left ] (f1) to (c1);
+}
++
+\diagram{
+  \draw (-0.5,-0.5) node[circlex] (f) {} to (0,-0.5) node[ddot] (f1) {};
+  \draw[overhang] (0,+0.5) node[ddot] (c1*) {};
+  \draw[->-,bend left ] (f1) to (c1*);
+  \draw[-<-,bend right] (f1) to (c1*);
+}
++
+\diagram{
+  \draw[overhang] (0,+0.5) node[ddot] (c1*) {};
+  \draw[overhang] (0,-0.5) node[ddot] (c1)  {};
+  \draw[->-=0.25,->-=0.75,bend left ] (c1) to node[midway,ddot] (f1) {} (c1*);
+  \draw[-<-,bend right] (c1) to (c1*);
+  \draw (f1) to ++(-0.5,0) node[circlex] {};
+}
++
+\diagram{
+  \draw[overhang] (0,+0.5) node[ddot] (c1*) {};
+  \draw[overhang] (0,-0.5) node[ddot] (c1)  {};
+  \draw[-<-=0.25,-<-=0.75,bend left] (c1) to node[midway,ddot] (f1) {} (c1*);
+  \draw[->-,bend right] (c1) to (c1*);
+  \draw (f1) to ++(-0.5,0) node[circlex] {};
+}
++
+\diagram{
+  \interaction{2}{g}{(0,0)}{ddot}{sawtooth};
+  \draw[overhang] (0,-1) node[ddot] (c1)  {};
+  \draw[overhang] (1,+1) node[ddot] (c1*) {};
+  \draw[->-,bend left ] (c1) to (g1);
+  \draw[-<-,bend right] (c1) to (g1); 
+  \draw[->-,bend left ] (g2) to (c1*);
+  \draw[-<-,bend right] (g2) to (c1*);
+}
+\end{equation}
+
+\begin{equation}
+  E_c
+=
+\diagram[top, bottom]{
+%top
+  \draw (-0.5,0.5) node[circlex] (f) {} -- (0,0.5) node[ddot=white] (f1) {};
+  \node at (0.5,0.5) {+};
+  \interaction{2}{g}{(1,0.5)}{ddot=white}{sawtooth};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+%bottom
+  \node at (0.5,-0.5) {
+    $\exp\left(
+    \diagram{
+      \interaction{2}{t}{(0,-0.25)}{ddot}{overhang};
+      \draw[->-] (t1) to ++(-0.25,+0.5);
+      \draw[-<-] (t1) to ++(+0.25,+0.5);
+      \draw[->-] (t2) to ++(-0.25,+0.5);
+      \draw[-<-] (t2) to ++(+0.25,+0.5);
+    }
+    \right)$
+  };
+}
+=
+\diagram{
+  \interaction{2}{g}{(0,+0.5)}{ddot}{sawtooth};
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[->-,bend left]  (t1) to (g1);
+  \draw[-<-,bend right] (t1) to (g1);
+  \draw[->-,bend left]  (t2) to (g2);
+  \draw[-<-,bend right] (t2) to (g2);
+}
+\end{equation}
+
+\begin{equation}
+\begin{array}{rl}
+  E_c
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[->-] (t1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (t1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (t2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (t2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
+=
+\diagram[top, bottom]{
+%top
+  \node[dot,label=left:{$a$}] (a) at (0.0,1.25) {};
+  \node[dot,label=left:{$i$}] (i) at (0.5,1.25) {};
+  \node[dot,label=left:{$b$}] (b) at (1.0,1.25) {};
+  \node[dot,label=left:{$j$}] (j) at (1.5,1.25) {};
+  \draw[-<-] (a) to ++(0,-0.5);
+  \draw[->-] (i) to ++(0,-0.5);
+  \draw[-<-] (b) to ++(0,-0.5);
+  \draw[->-] (j) to ++(0,-0.5);
+%mid
+  \draw (-0.5,0) node[circlex] (f) {} -- (0,0) node[ddot=white] (f1) {};
+  \node at (0.5,0) {+};
+  \interaction{2}{g}{(1,0)}{ddot=white}{sawtooth};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+%bottom
+  \node at (0.5,-1) {
+    $\exp\left(
+    \diagram{
+      \interaction{2}{t}{(0,-0.25)}{ddot}{overhang};
+      \draw[->-] (t1) to ++(-0.25,+0.5);
+      \draw[-<-] (t1) to ++(+0.25,+0.5);
+      \draw[->-] (t2) to ++(-0.25,+0.5);
+      \draw[-<-] (t2) to ++(+0.25,+0.5);
+    }
+    \right)$
+  };
+}
+=&
+\diagram{
+  \interaction{2}{g}{(0,-0.5)}{ddot}{sawtooth};
+  \draw[->-] (g1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (g1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (g2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (g2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
++
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[->-=0.25,->-=0.75] (t1) to node[midway,ddot] (f1) {}
+    ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (t1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (t2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (t2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+  \draw (f1) to ++(-0.5,0) node[circlex] {};
+}
++
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[-<-=0.25,-<-=0.75] (t1) to node[midway,ddot] (f1) {}
+    ++(-0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (t1) to ++(+0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (t2) to ++(-0.25,1) node[dot,label=left:$j$] {};
+  \draw[->-] (t2) to ++(+0.25,1) node[dot,label=left:$b$] {};
+  \draw (f1) to ++(-0.5,0) node[circlex] {};
+}
++
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[->-=0.25,->-=0.75] (t1) to node[midway,ddot] (g1) {}
+    ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-=0.7] (t1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-=0.25,->-=0.75] (t2) to node[midway,ddot] (g2) {}
+    ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-=0.7] (t2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+  \draw[sawtooth] (g1)--(g2);
+}
++
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \draw[-<-=0.25,-<-=0.75] (t1) to node[midway,ddot] (g1) {}
+    ++(-0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-=0.7] (t1) to ++(+0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-=0.25,-<-=0.75] (t2) to node[midway,ddot] (g2) {}
+    ++(-0.25,1) node[dot,label=left:$j$] {};
+  \draw[->-=0.7] (t2) to ++(+0.25,1) node[dot,label=left:$b$] {};
+  \draw[sawtooth] (g1)--(g2);
+}
+\\[-20pt]&
++
+\diagram{
+  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{g}{(1,+0.0)}{ddot}{sawtooth};
+  \draw[->-] (t1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (t1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-,bend left] (t2) to (g1);
+  \draw[-<-,bend right] (t2) to (g1);
+  \draw[->-] (g2) to ++(-0.25,0.5) node[dot,label=left:$b$] {};
+  \draw[-<-] (g2) to ++(+0.25,0.5) node[dot,label=left:$j$] {};
+}
++
+\diagram{
+  \interaction{2}{ta}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{tb}{(2,-0.5)}{ddot}{overhang};
+  \interaction{2}{g}{(1,0)}{ddot}{sawtooth};
+  \draw[->-=0.7] (ta1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-=0.3] (ta1) to (g1);
+  \draw[->-=0.7] (ta2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-=0.3] (ta2) to (g2);
+  \draw[->-=0.3] (tb1) to (g1);
+  \draw[-<-=0.7] (tb1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-=0.3] (tb2) to (g2);
+  \draw[-<-=0.7] (tb2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
++
+\diagram{
+  \interaction{2}{ta}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{tb}{(2,-0.5)}{ddot}{overhang};
+  \interaction{2}{g}{(1,0.5)}{ddot}{sawtooth};
+  \draw[->-] (ta1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (ta1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-,bend left]  (ta2) to (g1);
+  \draw[-<-,bend right] (ta2) to (g1);
+  \draw[->-,bend left]  (tb1) to (g2);
+  \draw[-<-,bend right] (tb1) to (g2);
+  \draw[->-] (tb2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (tb2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
+\\[10pt]&
++
+\diagram{
+  \interaction{2}{ta}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{tb}{(2,-0.5)}{ddot}{overhang};
+  \draw[sawtooth] (0,0) node[ddot] (g1) {} to (1.5,0) node[ddot] (g2) {};
+  \draw[->-,bend left]  (ta1) to (g1);
+  \draw[-<-,bend right] (ta1) to (g1);
+  \draw[->-=0.7] (ta2) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (ta2) to (g2);
+  \draw[->-] (tb1) to (g2);
+  \draw[-<-=0.7] (tb1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (tb2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (tb2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
++
+\diagram{
+  \interaction{2}{ta}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{tb}{(2,-0.5)}{ddot}{overhang};
+  \draw[sawtooth] (0,0) node[ddot] (g1) {} to (1.5,0) node[ddot] (g2) {};
+  \draw[->-,bend left]  (ta1) to (g1);
+  \draw[-<-,bend right] (ta1) to (g1);
+  \draw[-<-=0.7] (ta2) to ++(-0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (ta2) to (g2);
+  \draw[-<-] (tb1) to (g2);
+  \draw[->-=0.7] (tb1) to ++(+0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (tb2) to ++(-0.25,1) node[dot,label=left:$j$] {};
+  \draw[->-] (tb2) to ++(+0.25,1) node[dot,label=left:$b$] {};
+}
++
+\diagram{
+  \interaction{2}{ta}{(0,-0.5)}{ddot}{overhang};
+  \interaction{2}{tb}{(2,-0.5)}{ddot}{overhang};
+  \interaction{2}{g}{(0,+0.5)}{ddot}{sawtooth};
+  \draw[->-,bend left]  (ta1) to (g1);
+  \draw[-<-,bend right] (ta1) to (g1);
+  \draw[->-,bend left]  (ta2) to (g2);
+  \draw[-<-,bend right] (ta2) to (g2);
+  \draw[->-] (tb1) to ++(-0.25,1) node[dot,label=left:$a$] {};
+  \draw[-<-] (tb1) to ++(+0.25,1) node[dot,label=left:$i$] {};
+  \draw[->-] (tb2) to ++(-0.25,1) node[dot,label=left:$b$] {};
+  \draw[-<-] (tb2) to ++(+0.25,1) node[dot,label=left:$j$] {};
+}
+\end{array}
+\end{equation}
+
+
+\begin{equation}
+\diagram[top, bottom]{
+%top
+  \node at (0.0,1) {1};
+  \node at (0.5,1) {+};
+  \draw[overhang] (1.25,1.25) node[ddot] (c1*) {};
+  \draw[-<-] (c1*) to ++(-0.25,-0.5);
+  \draw[->-] (c1*) to ++(+0.25,-0.5);
+%middle
+  \draw (-0.5,0) node[circlex](f){} -- (0,0) node[ddot=white](f1){};
+  \draw[->-] (f1) to ++(0,+0.5);
+  \draw[-<-] (f1) to ++(0,-0.5);
+  \node at (0.5,0) {+};
+  \interaction{2}{g}{(1,0)}{ddot=white}{sawtooth};
+  \draw[->-] (g1) to ++(0,+0.5);
+  \draw[-<-] (g1) to ++(0,-0.5);
+  \draw[->-] (g2) to ++(0,+0.5);
+  \draw[-<-] (g2) to ++(0,-0.5);
+%bottom
+  \node at (0.0,-1) {1};
+  \node at (0.5,-1) {+};
+  \draw[overhang] (1.25,-1.25) node[ddot] (c1) {};
+  \draw[->-] (c1) to ++(-0.25,+0.5);
+  \draw[-<-] (c1) to ++(+0.25,+0.5);
+%derivative frame
+  \node[framenodes={(c1) (g1) (c1*) (g2) (f)}] (box) {};
+  \draw[->-] (box.north) to ++(-0.25,0.5) node[dot,label=left:$a$] (a) {};
+  \draw[-<-] (box.north) to ++(+0.25,0.5) node[dot,label=left:$i$] (i) {};
+}
+\end{equation}
+
+
+
+
+\end{document}
