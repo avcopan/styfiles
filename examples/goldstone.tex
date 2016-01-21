@@ -317,7 +317,7 @@
   \draw[->-] (g2) to ++(0,+0.5);
   \draw[-<-] (g2) to ++(0,-0.5);
 }
-\hspace{40pt}
+\hspace{30pt}
   E_0
 \equiv
 \diagram{
@@ -330,7 +330,7 @@
   \draw[->-] (g1) arc (0:360:+0.25);
   \draw[-<-] (g2) arc (0:360:-0.25);
 }
-\hspace{40pt}
+\hspace{30pt}
 \diagram{
   \draw (-0.5,0) node[circlex] (f) {} -- (0,0) node[ddot=white] (f1) {};
   \draw[->-] (f1) to ++(0,+0.5);
@@ -419,8 +419,6 @@
 \end{equation}
 
 \begin{equation}
-  E_c
-=
 \diagram[top, bottom]{
 %top
   \draw (-0.5,0.5) node[circlex] (f) {} -- (0,0.5) node[ddot=white] (f1) {};
@@ -458,15 +456,6 @@
 
 \begin{equation}
 \begin{array}{rl}
-  E_c
-\diagram{
-  \interaction{2}{t}{(0,-0.5)}{ddot}{overhang};
-  \draw[->-] (t1) to ++(-0.25,1) node[dot,label=left:$a$] {};
-  \draw[-<-] (t1) to ++(+0.25,1) node[dot,label=left:$i$] {};
-  \draw[->-] (t2) to ++(-0.25,1) node[dot,label=left:$b$] {};
-  \draw[-<-] (t2) to ++(+0.25,1) node[dot,label=left:$j$] {};
-}
-=
 \diagram[top, bottom]{
 %top
   \node[dot,label=left:{$a$}] (a) at (0.0,1.25) {};
