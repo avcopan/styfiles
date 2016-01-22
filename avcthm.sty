@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{avcthm}
-\RequirePackage{amsthm,kvoptions,cleveref,etoolbox,thmtools,scrextend}
+\RequirePackage{amsthm,kvoptions,cleveref,etoolbox,thmtools,scrextend,embrac}
 \SetupKeyvalOptions{family=depth,prefix=depth@}
 \DeclareStringOption[]{numberby}[]
 \ProcessKeyvalOptions*
@@ -35,5 +35,13 @@
 \Crefname{pro}{Prop}{Props}
 \Crefname{ex}{Ex}{Exs}
 \Crefname{ntt}{Notation}{Notations}
+% macros for theorem body
+\newcommand{\thmtitle}[1]{\textit{\bfseries\mathversion{bold}#1.}}
+\newcommand{\thmstatement}[1]{\textit{#1}}
+\newcommand{\thmproof}[1]{
+  \begin{addmargin}[1em]{0em}
+    Proof: #1
+  \end{addmargin}
+}
 
 \endinput
