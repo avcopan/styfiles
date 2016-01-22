@@ -1,7 +1,7 @@
-\usepackage{mathtools} %includes amsmath
-\usepackage{bm}
-\usepackage{xspace}
-\usepackage{xfrac}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{avcmath}
+\RequirePackage{mathtools,xspace,xfrac,mathdots}
+
 %ornaments
 \newcommand{\eth}{\ensuremath{^\text{th}}\xspace}
 \newcommand{\rst}{\ensuremath{^\text{st}}\xspace}
@@ -30,7 +30,6 @@
 \newcommand{\tfd}[2]{\ensuremath{\tfrac{d #1}{d #2}}}
 \newcommand{\dfd}[2]{\ensuremath{\dfrac{d #1}{d #2}}}
 %dots
-\usepackage{mathdots}
 \newcommand{\ld}{\ensuremath{\ldots}}
 \newcommand{\cd}{\ensuremath{\cdots}}
 \newcommand{\vd}{\ensuremath{\vdots}}
@@ -40,3 +39,5 @@
 \newcommand{\ma}[1]{\ensuremath{\begin{bmatrix}#1\end{bmatrix}}}
 \newcommand{\pma}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
 \newcommand{\ar}[1]{\ensuremath{\begin{matrix}#1\end{matrix}}}
+
+\endinput

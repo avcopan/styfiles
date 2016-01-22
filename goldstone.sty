@@ -1,4 +1,10 @@
-\usepackage{tikz}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{goldstone}
+\RequirePackage{tikz,kvoptions,etoolbox}
+\SetupKeyvalOptions{family=size,prefix=size@}
+\DeclareStringOption[0.85]{scale}[0.85]
+\ProcessKeyvalOptions*
+
 \usetikzlibrary{fit}
 \usetikzlibrary{calc}
 \usetikzlibrary{positioning}
@@ -134,8 +140,7 @@
     }
   },
   framenodes/.style={
-    draw,
-    ultra thin,
+    draw=gray,
     rounded corners=5pt,
     inner sep=5pt,
     fit=#1
@@ -145,7 +150,6 @@
   \draw[line width=#1,opacity=0] (current bounding box.south east) rectangle
                                  (current bounding box.north west);
 }
-\usepackage{etoolbox}
 \newcommand{\frameit}[1]{
   \padborder{5pt};
   \coordinate (tl) at (current bounding box.north west);
@@ -163,7 +167,7 @@
   \docsvlist{#1}
 }
 \newcommand{\diagram}[2][none]{
-  \begin{tikzpicture}[baseline=-2.5pt,scale=0.9,every node/.style={scale=0.9}]
+  \begin{tikzpicture}[baseline=-2.5pt,scale=\size@scale,every node/.style={scale=\size@scale,font=\small}]
     #2
     \frameit{#1};
   \end{tikzpicture}
@@ -174,3 +178,5 @@
     \node[#4] (#2\i) at ($#3 + (\i-1,0)$){};
   }
 }
+
+\endinput

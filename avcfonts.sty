@@ -1,9 +1,10 @@
-\usepackage{amsfonts}
-\usepackage{soul}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{avcfonts}
+\RequirePackage{amsfonts,soul,bm}
+
 \newcommand{\bmit}[1]{{\bfseries\itshape\mathversion{bold}#1}}
 \newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}}
 \newcommand{\mb}[1]{\ensuremath{\mathbb{#1}}}
-\usepackage{bm}
 \let\oldbm\bm
 \renewcommand{\bm}[1]{\ensuremath{\oldbm{#1}}}
 \newcommand{\mf}[1]{\ensuremath{\mathfrak{#1}}}
@@ -11,3 +12,5 @@
 \newcommand{\bo}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\ts}[1]{\ensuremath{{\textstyle#1}}}
 \newcommand{\ds}[1]{\ensuremath{{\displaystyle#1}}}
+
+\endinput

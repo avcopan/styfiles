@@ -1,4 +1,8 @@
-\usepackage{bm}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{qcmacros}
+\RequirePackage{bm,stackengine,simplewick}
+\RequirePackage[nomessages]{fp}
+
 \newcommand{\dg}{\ensuremath{^\dagger}}
 \newcommand{\tl}{\ensuremath{\tilde}}
 \newcommand{\ol}[1]{\ensuremath{\overline{#1}}}
@@ -9,10 +13,9 @@
 \newcommand{\ip}[1]{\ensuremath{\langle#1\rangle}}
 \newcommand{\vac}{\ensuremath{\mathrm{vac}}}
 \newcommand{\no}[1]{\ensuremath{{\bm{:}}#1{}{\bm{:}}}}
-\usepackage{stackengine}
 \newcommand{\gno}[1]{\setstackgap{S}{0.7pt}\ensuremath{\Shortstack{\textbf{.} \textbf{.} \textbf{.}}#1\Shortstack{\textbf{.} \textbf{.} \textbf{.}}}}
-\usepackage{simplewick}
-\usepackage[nomessages]{fp}
 \newcommand{\ctr}[5][0]{\FPeval\height{1.0+#1*0.5}\ensuremath{\contraction[\height ex]{#2}{#3}{#4}{#5}}}
 \newcommand{\ptcl}{\bullet}
 \newcommand{\hole}{\circ}
+
+\endinput

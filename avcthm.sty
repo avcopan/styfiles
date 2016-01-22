@@ -1,35 +1,39 @@
-\usepackage{cleveref}
-\usepackage{amsthm}
-\usepackage{etoolbox}
-\makeatletter
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{avcthm}
+\RequirePackage{amsthm,kvoptions,cleveref,etoolbox,thmtools,scrextend}
+\SetupKeyvalOptions{family=depth,prefix=depth@}
+\DeclareStringOption[]{numberby}[]
+\ProcessKeyvalOptions*
+
 \patchcmd{\@endtheorem}{\@endpefalse}{}{}{}
 \patchcmd{\endproof}{\@endpefalse}{}{}{}
-\makeatother
-\usepackage{thmtools}
-\usepackage{scrextend}
-\declaretheoremstyle[spaceabove=5pt,spacebelow=5pt,bodyfont=\small]{mystyle}
-\theoremstyle{mystyle}
-\newtheorem{dfn}{Definition}
+\declaretheoremstyle[spaceabove=5pt,spacebelow=5pt,bodyfont=\small]{avc}
+\theoremstyle{avc}
+\newtheorem{dfn}{Definition} [\depth@numberby]
+\newtheorem{thm}{Theorem}    [\depth@numberby]
+\newtheorem{cor}{Corollary}  [\depth@numberby]
+\newtheorem{lem}{Lemma}      [\depth@numberby]
+\newtheorem{rmk}{Remark}     [\depth@numberby]
+\newtheorem{pro}{Proposition}[\depth@numberby]
+\newtheorem{ex}{Example}     [\depth@numberby]
+\newtheorem{ntt}{Notation}   [\depth@numberby]
+% \cref
 \crefname{dfn}{definition}{definitions}
-\Crefname{dfn}{Def}{Defs}
-\newtheorem{thm}{Theorem}
 \crefname{thm}{theorem}{theorems}
-\Crefname{thm}{Thm}{Thms}
-\newtheorem{cor}{Corollary}
 \crefname{cor}{corollary}{corollaries}
-\Crefname{cor}{Cor}{Cors}
-\newtheorem{lem}{Lemma}
 \crefname{lem}{lemma}{lemmas}
-\Crefname{lem}{Lem}{Lems}
-\newtheorem{rmk}{Remark}
 \crefname{rmk}{remark}{remarks}
-\Crefname{rmk}{Rmk}{Rmks}
-\newtheorem{pro}{Proposition}
 \crefname{pro}{proposition}{propositions}
-\Crefname{pro}{Prop}{Props}
-\newtheorem{ex}{Example}
 \crefname{ex}{example}{exampls}
-\Crefname{ex}{Ex}{Exs}
-\newtheorem{ntt}{Notation}
 \crefname{ntt}{notation}{notations}
+% \Cref
+\Crefname{dfn}{Def}{Defs}
+\Crefname{thm}{Thm}{Thms}
+\Crefname{cor}{Cor}{Cors}
+\Crefname{lem}{Lem}{Lems}
+\Crefname{rmk}{Rmk}{Rmks}
+\Crefname{pro}{Prop}{Props}
+\Crefname{ex}{Ex}{Exs}
 \Crefname{ntt}{Notation}{Notations}
+
+\endinput
