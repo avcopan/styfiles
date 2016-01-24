@@ -1,6 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{avcthm}
-\RequirePackage{amsthm,kvoptions,cleveref,etoolbox,thmtools,scrextend,embrac}
+\RequirePackage{amsthm,kvoptions,etoolbox,thmtools,scrextend,embrac}
+\RequirePackage{cleveref}
 \SetupKeyvalOptions{family=depth,prefix=depth@}
 \DeclareStringOption[]{numberby}[]
 \ProcessKeyvalOptions*
@@ -18,23 +19,23 @@
 \newtheorem{ex}{Example}     [\depth@numberby]
 \newtheorem{ntt}{Notation}   [\depth@numberby]
 % \cref
-\crefname{dfn}{definition}{definitions}
-\crefname{thm}{theorem}{theorems}
-\crefname{cor}{corollary}{corollaries}
-\crefname{lem}{lemma}{lemmas}
-\crefname{rmk}{remark}{remarks}
+\crefname{dfn}{definition} {definitions}
+\crefname{thm}{theorem}    {theorems}
+\crefname{cor}{corollary}  {corollaries}
+\crefname{lem}{lemma}      {lemmas}
+\crefname{rmk}{remark}     {remarks}
 \crefname{pro}{proposition}{propositions}
-\crefname{ex}{example}{exampls}
-\crefname{ntt}{notation}{notations}
+\crefname{ex} {example}    {examples}
+\crefname{ntt}{notation}   {notations}
 % \Cref
-\Crefname{dfn}{Def}{Defs}
-\Crefname{thm}{Thm}{Thms}
-\Crefname{cor}{Cor}{Cors}
-\Crefname{lem}{Lem}{Lems}
-\Crefname{rmk}{Rmk}{Rmks}
-\Crefname{pro}{Prop}{Props}
-\Crefname{ex}{Ex}{Exs}
-\Crefname{ntt}{Notation}{Notations}
+\Crefname{dfn}{def} {defs}
+\Crefname{thm}{thm} {thms}
+\Crefname{cor}{cor} {cors}
+\Crefname{lem}{lem} {lems}
+\Crefname{rmk}{rmk} {rmks}
+\Crefname{pro}{prop}{props}
+\Crefname{ex} {ex}  {exs}
+\Crefname{ntt}{nt}  {nts}
 % macros for theorem body
 \newcommand{\thmtitle}[1]{\textit{\bfseries\mathversion{bold}#1.}}
 \newcommand{\thmstatement}[1]{\textit{#1}}
@@ -43,5 +44,10 @@
     Proof: #1
   \end{addmargin}
 }
+% also set crefname for other things, in order to be consistent
+\crefname{equation}{equation}{equations}
+\crefname{table}   {table}   {tables}
+\Crefname{equation}{eq} {eqs}
+\Crefname{table}   {tab}{tabs}
 
 \endinput

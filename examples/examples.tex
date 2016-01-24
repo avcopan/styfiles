@@ -3,18 +3,21 @@
 
 \usepackage{avcgreek}
 \usepackage{avcfonts}
-\usepackage{avcthm}    % option [numberby=<chapter, section, ....>] (default is empty)
 \usepackage{avcmath}
+\usepackage{avcthm}    % option [numberby=<chapter, section, ....>] (default is empty)
 \usepackage{qcmacros}
 \usepackage{goldstone} % option [scale=<0.9, 1.1, ...>] (default is 0.85)
 
-%%%DOCUMENT%%%
+% note: avcthm should be loaded after avcmath, because
+%       loading cleveref before amsmath breaks \cref{}s
+%       to equations
+
 \begin{document}
 
 \input{avcgreek}
 \input{avcfonts}
-\input{avcthm}
 \input{avcmath}
+\input{avcthm}
 \input{qcmacros}
 \input{goldstone}
 
