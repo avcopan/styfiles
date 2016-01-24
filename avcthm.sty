@@ -10,32 +10,35 @@
 \patchcmd{\endproof}{\@endpefalse}{}{}{}
 \declaretheoremstyle[spaceabove=5pt,spacebelow=5pt,bodyfont=\small]{avc}
 \theoremstyle{avc}
-\newtheorem{dfn}{Definition} [\depth@numberby]
-\newtheorem{thm}{Theorem}    [\depth@numberby]
-\newtheorem{cor}{Corollary}  [\depth@numberby]
-\newtheorem{lem}{Lemma}      [\depth@numberby]
-\newtheorem{rmk}{Remark}     [\depth@numberby]
-\newtheorem{pro}{Proposition}[\depth@numberby]
-\newtheorem{ex}{Example}     [\depth@numberby]
-\newtheorem{ntt}{Notation}   [\depth@numberby]
+\newtheorem{dfn} {Definition} [\depth@numberby]
+\newtheorem{thm} {Theorem}    [\depth@numberby]
+\newtheorem{cor} {Corollary}  [\depth@numberby]
+\newtheorem{lem} {Lemma}      [\depth@numberby]
+\newtheorem{rmk} {Remark}     [\depth@numberby]
+\newtheorem{prop}{Proposition}[\depth@numberby]
+\newtheorem{prob}{Problem}    [\depth@numberby]
+\newtheorem{ex}  {Example}    [\depth@numberby]
+\newtheorem{ntt} {Notation}   [\depth@numberby]
 % \cref
-\crefname{dfn}{definition} {definitions}
-\crefname{thm}{theorem}    {theorems}
-\crefname{cor}{corollary}  {corollaries}
-\crefname{lem}{lemma}      {lemmas}
-\crefname{rmk}{remark}     {remarks}
-\crefname{pro}{proposition}{propositions}
-\crefname{ex} {example}    {examples}
-\crefname{ntt}{notation}   {notations}
+\crefname{dfn} {definition} {definitions}
+\crefname{thm} {theorem}    {theorems}
+\crefname{cor} {corollary}  {corollaries}
+\crefname{lem} {lemma}      {lemmas}
+\crefname{rmk} {remark}     {remarks}
+\crefname{prop}{proposition}{propositions}
+\crefname{prob}{problem}    {problems}
+\crefname{ex}  {example}    {examples}
+\crefname{ntt} {notation}   {notations}
 % \Cref
-\Crefname{dfn}{def} {defs}
-\Crefname{thm}{thm} {thms}
-\Crefname{cor}{cor} {cors}
-\Crefname{lem}{lem} {lems}
-\Crefname{rmk}{rmk} {rmks}
-\Crefname{pro}{prop}{props}
-\Crefname{ex} {ex}  {exs}
-\Crefname{ntt}{nt}  {nts}
+\Crefname{dfn} {def} {defs}
+\Crefname{thm} {thm} {thms}
+\Crefname{cor} {cor} {cors}
+\Crefname{lem} {lem} {lems}
+\Crefname{rmk} {rmk} {rmks}
+\Crefname{prop}{prop}{props}
+\Crefname{prob}{prob}{probs}
+\Crefname{ex}  {ex}  {exs}
+\Crefname{ntt} {nt}  {nts}
 % macros for theorem body
 \newcommand{\thmtitle}[1]{\textit{\bfseries\mathversion{bold}#1.}}
 \newcommand{\thmstatement}[1]{\textit{#1}}
