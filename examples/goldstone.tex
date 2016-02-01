@@ -6,42 +6,42 @@
   a_p
 \equiv
 \diagram{
-  \node[dot=white] (p) at (0,0) {} node[above] {$p$};
+  \node[dot=white,label=above:$p$] (p) at (0,0) {};
   \draw[-<-] (p) to ++(0,-0.5);
 }
 \hspace{20pt}
   a_p^\dagger
 \equiv
 \diagram{
-  \node[dot=white] (p) at (0,0) {} node[below] {$p$};
+  \node[dot=white,label=below:$p$] (p) at (0,0) {};
   \draw[->-] (p) to ++(0,+0.5);
 }
 \hspace{20pt}
   b_a
 \equiv
 \diagram{
-  \node[dot] (a) at (0,0) {} node[above] {$a$};
+  \node[dot,label=above:$a$] (a) at (0,0) {};
   \draw[-<-] (a) to ++(0,-0.5);
 }
 \hspace{20pt}
   b_i
 \equiv
 \diagram{
-  \node[dot] (i) at (0,0) {} node[above] {$i$};
+  \node[dot,label=above:$i$] (i) at (0,0) {};
   \draw[->-] (i) to ++(0,-0.5);
 }
 \hspace{20pt}
   b_a^\dagger
 \equiv
 \diagram{
-  \node[dot] (a) at (0,0) {} node[below] {$a$};
+  \node[dot,label=below:$a$] (a) at (0,0) {};
   \draw[->-] (a) to ++(0,+0.5);
 }
 \hspace{20pt}
   b_i^\dagger
 \equiv
 \diagram{
-  \node[dot] (i) at (0,0) {} node[below] {$i$};
+  \node[dot,label=below:$i$] (i) at (0,0) {};
   \draw[-<-] (i) to ++(0,+0.5);
 }
 \end{equation}
