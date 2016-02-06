@@ -1,9 +1,11 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{avcfonts}
 \RequirePackage{amsfonts,soul,bm,embrac}
+\RequirePackage[mathscr]{euscript}
 
 \newcommand{\bmit}[1]{{\bfseries\itshape\mathversion{bold}#1}}
 \newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\ms}[1]{\ensuremath{\mathscr{#1}}}
 \newcommand{\mb}[1]{\ensuremath{\mathbb{#1}}}
 \let\oldbm\bm
 \renewcommand{\bm}[1]{\ensuremath{\oldbm{#1}}} % caution: bm package conflicts with \xspace
