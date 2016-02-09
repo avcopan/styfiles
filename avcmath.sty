@@ -36,8 +36,8 @@
 \newcommand{\dd}{\ensuremath{\ddots}}
 \newcommand{\id}{\ensuremath{\iddots}}
 %arrays
-\newcommand{\ma}[1]{\ensuremath{\begin{bmatrix}#1\end{bmatrix}}}
-\newcommand{\pma}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
-\newcommand{\ar}[1]{\ensuremath{\begin{matrix}#1\end{matrix}}}
+\newcommand{\ma}[2][c]{\ensuremath{\begin{pmatrix*}[#1]{}#2\end{pmatrix*}}}
+\newcommand{\pma}[2][c]{\ensuremath{\begin{bmatrix*}[#1]{}#2\end{bmatrix*}}}
+\newcommand{\ar}[2][c]{\ensuremath{\begin{matrix*}[#1]{}#2\end{matrix*}}}
 
 \endinput
