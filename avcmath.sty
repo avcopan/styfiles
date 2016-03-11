@@ -1,9 +1,12 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{avcmath}
-\RequirePackage{mathtools,xspace,xfrac,mathdots,cancel}
+\RequirePackage{mathtools,xspace,xfrac,mathdots,cancel,amssymb,array}
+
+\def\sgnspace\ignorespaces{\@ifnextchar-{}{\@ifnextchar+{}{\phantom{+}}}}
+\newcolumntype{s}{>{\sgnspace}{c}}
 
 %ornaments
-\newcommand{\eth}{\ensuremath{^\text{th}}\xspace}
+\renewcommand{\eth}{\ensuremath{^\text{th}}\xspace}
 \newcommand{\rst}{\ensuremath{^\text{st}}\xspace}
 \newcommand{\ond}{\ensuremath{^\text{nd}}\xspace}
 \newcommand{\ird}{\ensuremath{^\text{rd}}\xspace}
@@ -36,9 +39,9 @@
 \newcommand{\dd}{\ensuremath{\ddots}}
 \newcommand{\id}{\ensuremath{\iddots}}
 %arrays
-\newcommand{\ma}[2][c]{\ensuremath{\begin{pmatrix*}[#1]{}#2\end{pmatrix*}}}
-\newcommand{\pma}[2][c]{\ensuremath{\begin{bmatrix*}[#1]{}#2\end{bmatrix*}}}
-\newcommand{\ar}[2][c]{\ensuremath{\begin{matrix*}[#1]{}#2\end{matrix*}}}
+\newcommand{\ma}[2][c]{\ensuremath{\begin{pmatrix*}[#1]#2\end{pmatrix*}}}
+\newcommand{\pma}[2][c]{\ensuremath{\begin{bmatrix*}[#1]#2\end{bmatrix*}}}
+\newcommand{\ar}[2][c]{\ensuremath{\begin{matrix*}[#1]#2\end{matrix*}}}
 \setcounter{MaxMatrixCols}{50}
 
 \endinput
