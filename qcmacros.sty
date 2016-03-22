@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{qcmacros}
-\RequirePackage{stackengine,simplewick,xspace}
+\RequirePackage{stackengine,simplewick,xspace,bm}
 \RequirePackage[nomessages]{fp}
 
 \newcommand{\dg}{\ensuremath{^\dagger}}
@@ -12,10 +12,10 @@
 \newcommand{\kt}[1]{\ensuremath{|#1\rangle}\xspace}
 \newcommand{\ip}[1]{\ensuremath{\langle#1\rangle}\xspace}
 \newcommand{\vac}{\ensuremath{\mathrm{vac}}\xspace}
-\newcommand{\twodots}{\ensuremath{\textbf{:}}}
-\newcommand{\threedots}{\setstackgap{S}{0.7pt}\ensuremath{\Shortstack{\textbf{.} \textbf{.} \textbf{.}}}}
-\newcommand{\no}[1]{\ensuremath{\twodots#1{}\twodots}\xspace}
-\newcommand{\gno}[1]{\ensuremath{\threedots#1{}\threedots}\xspace}
+\newcommand{\twodots}{\setstackgap{S}{1.4pt}\ensuremath{\Shortstack{\bm{.} \bm{.}}}}
+\newcommand{\threedots}{\setstackgap{S}{0.7pt}\ensuremath{\Shortstack{\bm{.} \bm{.} \bm{.}}}}
+\newcommand{\no}[1]{\ensuremath{\twodots#1\twodots}\xspace}
+\newcommand{\gno}[1]{\ensuremath{\threedots#1\threedots}\xspace}
 \newcommand{\ctr}[5][0]{\FPeval\height{0.7+#1*0.5}\ensuremath{\contraction[\height ex]{#2}{#3}{#4}{#5}}}
 \newcommand{\ptcl}{\bullet}
 \newcommand{\hole}{\circ}
