@@ -157,7 +157,17 @@
                                  (current bounding box.north west);
 }
 \newcommand{\frameit}[1]{
-  \padborder{5pt};
+  \renewcommand*{\do}[1]{
+    \ifstrequal{##1}{nopadding}{
+      \def\dontpad{}
+    }{}
+  }
+  \docsvlist{#1}
+  \ifdefined\dontpad
+    % don't do anything
+  \else
+    \padborder{5pt};
+  \fi
   \coordinate (tl) at (current bounding box.north west);
   \coordinate (tr) at (current bounding box.north east);
   \coordinate (bl) at (current bounding box.south west);
