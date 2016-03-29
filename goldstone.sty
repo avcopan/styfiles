@@ -95,6 +95,28 @@
   },
   dot/.default={black},
   ddot/.default={black},
+  flexdot/.style 2 args={
+    inner sep=0pt,
+    circle,
+    minimum size=2*#1,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[draw,fill=#2] (0,0) circle (#1);
+      \end{pgfonlayer}
+    }
+  },
+  flexddot/.style 2 args={
+    inner sep=0pt,
+    circle,
+    minimum size=2*#1,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[draw,double,fill=#2] (0,0) circle (#1);
+      \end{pgfonlayer}
+    }
+  },
+  flexdot/.default={0.33ex}{black},
+  flexddot/.default={0.45ex}{black},
   ex/.style={
     path picture={
       \draw(path picture bounding box.south east)--(path picture bounding box.north west)
