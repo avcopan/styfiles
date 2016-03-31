@@ -180,15 +180,18 @@
 }
 \newcommand{\frameit}[1]{
   \renewcommand*{\do}[1]{
-    \ifstrequal{##1}{nopadding}{
-      \def\dontpad{}
+    \ifstrequal{##1}{top}{
+      \def\applypadding{}
+    }{}
+    \ifstrequal{##1}{bottom}{
+      \def\applypadding{}
     }{}
   }
   \docsvlist{#1}
-  \ifdefined\dontpad
-    % don't do anything
-  \else
+  \ifdefined\applypadding
     \padborder{5pt};
+  \else
+    % don't do anything
   \fi
   \coordinate (tl) at (current bounding box.north west);
   \coordinate (tr) at (current bounding box.north east);
