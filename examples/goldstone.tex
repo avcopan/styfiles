@@ -652,7 +652,7 @@
   \draw[-<-] (c1) to ++(+0.25,+0.5);
   \frameit{top, bottom};
 %derivative
-  \node[framenodes={(tl) (tr) (bl) (br)}] (box) {};
+  \node[framenodes={gray:(tl) (tr) (bl) (br)}] (box) {};
   \draw[overhang] (box.north) node[ddot] (c1deriv) {};
   \draw[->-] (c1deriv) to ++(-0.25,0.5) node[dot,label=left:$a$] {};
   \draw[-<-] (c1deriv) to ++(+0.25,0.5) node[dot,label=left:$i$] {};
