@@ -40,16 +40,13 @@
   -<-/.default=0.5,
   overhang/.style={
     semithick,
-    line cap=round,
-    shorten >=-0.17cm,
-    shorten <=-0.17cm,
     decoration={
       markings,% switch on markings
       mark=at position 0 with {\coordinate (start) at (0,0);},
       mark=at position 1 with {% hack to make 0-length line horizontal -- only works
         \coordinate (end) at (0.00001,0);% for \draw[overhang], not \node[overhang]
-        \draw [semithick,line cap=round,shorten >=-0.17cm,shorten <=0.17cm]
-          (start)--(end)--(start);
+        \draw [semithick,line cap=round,shorten >=-0.17cm,shorten <=-0.17cm]
+          (start)--(end);%--(start);
       }
     },
     postaction={decorate}
@@ -222,6 +219,7 @@
   \end{tikzpicture}
 }
 \newcommand{\interaction}[5]{
+  \draw[#5] #3; % fixes [overhang] style for single-node interaction line
   \draw[#5] #3 to ++(#1-1,0);
   \foreach \i in {1,...,#1}{
     \node[#4] (#2\i) at ($#3 + (\i-1,0)$){};
