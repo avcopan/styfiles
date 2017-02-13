@@ -126,6 +126,16 @@
            (path picture bounding box.east) --(path picture bounding box.west) ;
     }
   },
+  circlez/.style={
+    inner sep=0pt,
+    circle,
+    minimum size=0.25cm,
+    path picture={
+      \begin{pgfonlayer}{foreground}
+        \draw[fill=white] (0,0) circle (0.125cm) node {\tiny$0$};
+      \end{pgfonlayer}
+    }
+  },
   circlex/.style={
     inner sep=0pt,
     circle,
